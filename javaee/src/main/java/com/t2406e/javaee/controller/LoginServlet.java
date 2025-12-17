@@ -20,10 +20,13 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     public void init() {
-        userDAO = new UserDAO(); // khởi tạo DAO 1 lần
+        userDAO = new UserDAO(); // khởi tạo DAO 1 lần cặp REQ, REP
     }
+    // Nên để ở đây, vì taọ 1 lần Model UserDao() - Tránh lãng phí tài nguyên
 
     @Override
+    // ĐẶT USERDAO() Ở ĐÂY CŨNG ĐƯƠC
+    // TUY NHIÊN SẼ LÃNG PHI, VÌ MỖI LẦN DOGET SẼ GOI DEN, GAY RA LANG PHI
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
             throws ServletException, IOException {
