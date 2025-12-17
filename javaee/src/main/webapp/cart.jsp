@@ -1,4 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="java.util.List" %>
+
+<%
+    List<String> cart = (List<String>) request.getAttribute("cart");
+%>
 
 <!DOCTYPE html>
 <html>
@@ -61,7 +66,7 @@
 
         .actions a {
             display: inline-block;
-            margin: 8px 5px 0 0;
+            margin: 10px 5px 0 0;
             padding: 10px 14px;
             background: #667eea;
             color: #fff;
@@ -79,14 +84,9 @@
             color: #777;
             font-style: italic;
         }
-
-        .session {
-            font-size: 12px;
-            color: #888;
-            margin-bottom: 15px;
-        }
     </style>
 </head>
+
 <body>
 
 <div class="container">
@@ -100,20 +100,26 @@
         </div>
     </div>
 
-    <p class="session">Session ID: ${pageContext.session.id}</p>
-
     <!-- Cart content -->
-    <c:if test="${empty cart}">
-        <p class="empty">Your cart is empty.</p>
-    </c:if>
-
-    <c:if test="${not empty cart}">
-        <ul>
-            <c:forEach var="item" items="${cart}">
-                <li>${item}</li>
-            </c:forEach>
-        </ul>
-    </c:if>
+    <%
+        if (cart == null || cart.isEmpty()) {
+    %>
+    <p class="empty">Your cart is empty.</p>
+    <%
+    } else {
+    %>
+    <ul>
+        <%
+            for (String item : cart) {
+        %>
+        <li><%= item %></li>
+        <%
+            }
+        %>
+    </ul>
+    <%
+        }
+    %>
 
     <hr>
 
