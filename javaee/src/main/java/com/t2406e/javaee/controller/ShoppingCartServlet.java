@@ -35,11 +35,24 @@ public class ShoppingCartServlet extends HttpServlet {
             session.setAttribute("myCart", cart);
         }
 
-        // 4. Thêm sản phẩm
-        String newItem = req.getParameter("item");
-        if (newItem != null && !newItem.isEmpty()) {
-            cart.add(newItem);
+        String action = req.getParameter("action");
+        String item = req.getParameter("item");
+
+        // ADD ITEM
+        if (item != null && !item.isEmpty() && action == null) {
+            cart.add(item);
         }
+
+        // REMOVE ITEM
+        if ("remove".equals(action) && item != null) {
+            cart.remove(item); // xóa 1 item đầu tiên trùng tên
+        }
+
+        // 4. Thêm sản phẩm
+//        String newItem = req.getParameter("item");
+//        if (newItem != null && !newItem.isEmpty()) {
+//            cart.add(newItem);
+//        }
 
         // 5. Gửi cart sang JSP
         req.setAttribute("cart", cart);

@@ -112,7 +112,13 @@
         <%
             for (String item : cart) {
         %>
-        <li><%= item %></li>
+        <li>
+            <%= item %>
+            <a href="cart?action=remove&item=<%= item %>"
+               style="color:red; margin-left:10px; text-decoration:none;">
+                Remove
+            </a>
+        </li>
         <%
             }
         %>
