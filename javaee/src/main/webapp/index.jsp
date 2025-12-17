@@ -53,6 +53,7 @@
         <a href="home">Home</a>
         <a href="login">Login</a>
         <a href="cart">Cart</a>
+        <a href="product-list.jsp">Product</a>
     </div>
 </div>
 
