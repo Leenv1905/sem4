@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: vanth
-  Date: 12/17/2025
-  Time: 11:42 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.t2406e.javaee.model.Product" %>
 
@@ -104,56 +97,45 @@
 <div class="container">
     <h2>Edit Product</h2>
 
-<%--    <form action="<%= request.getContextPath() %>/product/update" method="post">--%>
-        <form action="<%= request.getContextPath() %>#" method="post">
+    <!-- POST: update product -->
+    <form action="<%= request.getContextPath() %>/product?action=edit" method="post">
 
         <!-- Hidden ID -->
-<%--        <input type="hidden" name="id" value="<%= product.getId() %>">--%>
-            <input type="hidden" name="id" value="1">
-
+        <input type="hidden" name="id" value="<%= product.getId() %>">
 
         <div class="form-group">
             <label>Product Name</label>
-<%--            <input type="text" name="name" value="<%= product.getName() %>" required>--%>
-            <input type="text" name="name" value="Điện thoại Iphone 17" required>
-
+            <input type="text" name="name"
+                   value="<%= product.getName() %>" required>
         </div>
 
         <div class="form-group">
             <label>Price</label>
             <input type="number" name="price" step="0.01"
-<%--                   value="<%= product.getPrice() %>" required>--%>
-            value="1.200" required>
-
+                   value="<%= product.getPrice() %>" required>
         </div>
 
         <div class="form-group">
             <label>Description</label>
-            <input type="text" name="desscription"
-<%--                   value="<%= product.getDesscription() %>" required>--%>
-            value="Điện thoại đời mới nhất" required>
-
+            <input type="text" name="description"
+                   value="<%= product.getDescription() %>" required>
         </div>
 
         <div class="form-group">
             <label>Quantity</label>
-<%--            <input type="number" name="quantity"--%>
-<%--                   value="<%= product.getQuantity() %>" required>--%>
             <input type="number" name="quantity"
-                   value="3" required>
+                   value="<%= product.getQuantity() %>" required>
         </div>
 
         <div class="form-group">
             <label>Image URL</label>
-<%--            <input type="text" name="image"--%>
-<%--                   value="<%= product.getImage() %>" required>--%>
             <input type="text" name="image"
-                   value="https://cdn.wccftech.com/wp-content/uploads/2025/03/iPhone-17-3-1.jpg" required>
+                   value="<%= product.getImage() %>" required>
         </div>
 
         <div class="btn-group">
             <button type="submit">Update</button>
-            <a href="<%= request.getContextPath() %>/product-list.jsp"
+            <a href="<%= request.getContextPath() %>/product"
                class="back-btn">Back to List</a>
         </div>
     </form>
@@ -161,4 +143,3 @@
 
 </body>
 </html>
-

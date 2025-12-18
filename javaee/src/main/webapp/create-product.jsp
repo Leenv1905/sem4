@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: vanth
-  Date: 12/17/2025
-  Time: 7:46 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -98,7 +91,8 @@
 <div class="container">
     <h2>Create Product</h2>
 
-    <form action="<%= request.getContextPath() %>/product" method="post">
+    <!-- POST: gửi dữ liệu -->
+    <form action="${pageContext.request.contextPath}/product?action=create" method="post">
 
         <div class="form-group">
             <label>Product Name</label>
@@ -112,7 +106,7 @@
 
         <div class="form-group">
             <label>Description</label>
-            <input type="text" name="desscription" required>
+            <input type="text" name="description" required>
         </div>
 
         <div class="form-group">
@@ -122,12 +116,14 @@
 
         <div class="form-group">
             <label>Image URL</label>
-            <input type="text" name="image" placeholder="https://..." required>
+            <input type="text" name="image" placeholder="images/iphone15.jpg" required>
         </div>
 
         <div class="btn-group">
             <button type="submit">Create</button>
-            <a href="<%= request.getContextPath() %>/product-list.jsp" class="home-btn">
+
+            <!-- GET: mở danh sách -->
+            <a href="${pageContext.request.contextPath}/product" class="home-btn">
                 Back to List
             </a>
         </div>
@@ -136,4 +132,3 @@
 
 </body>
 </html>
-

@@ -1,11 +1,10 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: vanth
-  Date: 12/17/2025
-  Time: 11:34 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.t2406e.javaee.model.Product" %>
+
+<%
+    Product p = (Product) request.getAttribute("product");
+%>
+
 <html>
 <head>
     <title>View Product</title>
@@ -107,7 +106,7 @@
 
     <!-- Back -->
     <div class="back-link">
-        <a href="<%= request.getContextPath() %>/product-list.jsp">← Back to Product List</a>
+        <a href="<%= request.getContextPath() %>/product">← Back to Product List</a>
     </div>
 
     <!-- Product detail -->
@@ -115,22 +114,24 @@
 
         <!-- Image -->
         <div class="product-image">
-            <img src="https://cdn.wccftech.com/wp-content/uploads/2025/03/iPhone-17-3-1.jpg?text=Product+Image">
+<%--            <img src="<%= request.getContextPath() + "/" + p.getImage() %>"--%>
+<%--                 alt="<%= p.getName() %>">--%>
+                 <img src="<%= p.getImage() %>"
+                     alt="<%= p.getName() %>">
         </div>
 
         <!-- Info -->
         <div class="product-info">
-            <h2>Sample Product Name</h2>
+            <h2><%= p.getName() %></h2>
 
-            <div class="price">$199.00</div>
+            <div class="price">$<%= p.getPrice() %></div>
 
             <div class="description">
-                Đây là mô tả chi tiết của sản phẩm. Nội dung này sẽ được lấy
-                từ database thông qua Servlet và ProductDAO.
+                <%= p.getDescription() %>
             </div>
 
             <div class="quantity">
-                <strong>Quantity:</strong> 20 items available
+                <strong>Quantity:</strong> <%= p.getQuantity() %> items available
             </div>
 
             <div class="actions">
@@ -145,4 +146,3 @@
 
 </body>
 </html>
-

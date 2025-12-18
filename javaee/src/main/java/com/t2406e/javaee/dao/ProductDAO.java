@@ -11,14 +11,16 @@ public class ProductDAO {
 
     /* ================= CREATE ================= */
     public boolean insert(Product product) {
-        String sql = "INSERT INTO products(name, price, desscription) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO products(name, price, quantity, description, image) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, product.getName());
             ps.setDouble(2, product.getPrice());
-            ps.setString(3, product.getDesscription());
+            ps.setInt(3, product.getQuantity());
+            ps.setString(4, product.getDescription());
+            ps.setString(5, product.getImage());
 
             return ps.executeUpdate() > 0;
 
@@ -38,12 +40,7 @@ public class ProductDAO {
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                Product p = new Product();
-                p.setId(rs.getInt("id"));
-                p.setName(rs.getString("name"));
-                p.setPrice(rs.getDouble("price"));
-                p.setDesscription(rs.getString("desscription"));
-
+                Product p = mapResultSetToProduct(rs);
                 list.add(p);
             }
 
@@ -65,11 +62,7 @@ public class ProductDAO {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                product = new Product();
-                product.setId(rs.getInt("id"));
-                product.setName(rs.getString("name"));
-                product.setPrice(rs.getDouble("price"));
-                product.setDesscription(rs.getString("desscription"));
+                product = mapResultSetToProduct(rs);
             }
 
         } catch (Exception e) {
@@ -80,15 +73,21 @@ public class ProductDAO {
 
     /* ================= UPDATE ================= */
     public boolean update(Product product) {
-        String sql = "UPDATE products SET name = ?, price = ?, desscription = ? WHERE id = ?";
+        String sql = """
+            UPDATE products 
+            SET name = ?, price = ?, quantity = ?, description = ?, image = ?
+            WHERE id = ?
+        """;
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, product.getName());
             ps.setDouble(2, product.getPrice());
-            ps.setString(3, product.getDesscription());
-            ps.setInt(4, product.getId());
+            ps.setInt(3, product.getQuantity());
+            ps.setString(4, product.getDescription());
+            ps.setString(5, product.getImage());
+            ps.setInt(6, product.getId());
 
             return ps.executeUpdate() > 0;
 
@@ -112,5 +111,17 @@ public class ProductDAO {
             e.printStackTrace();
         }
         return false;
+    }
+
+    /* ================= MAP RESULT ================= */
+    private Product mapResultSetToProduct(ResultSet rs) throws SQLException {
+        Product p = new Product();
+        p.setId(rs.getInt("id"));
+        p.setName(rs.getString("name"));
+        p.setPrice(rs.getDouble("price"));
+        p.setQuantity(rs.getInt("quantity"));
+        p.setDescription(rs.getString("description"));
+        p.setImage(rs.getString("image"));
+        return p;
     }
 }

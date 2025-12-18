@@ -10,83 +10,169 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.List;
 
-// Define URL mapping without web.xml
-// Truy xuất thông qua @, không cần viết trên web.xml
 @WebServlet(name = "productServlet", urlPatterns = {"/product"})
-//@WebServlet("/product")
-
 public class ProductServlet extends HttpServlet {
+
     private ProductDAO productDAO;
-    // Khởi tạo 1 model
+
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        productDAO = new ProductDAO(); // Chính thức cấp phát bộ nhớ
+        productDAO = new ProductDAO();
     }
 
-//    @Override
-//    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        super.service(req, resp);
-//    }
-
+    /* ================== GET ================== */
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        super.doGet(req, resp);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        String action = req.getParameter("action");
+//        action ở đây là tham số điều khiển (controller parameter)
+//        – nó quyết định Servlet sẽ xử lý nghiệp vụ nào,
+//        thay vì bạn phải tạo nhiều Servlet khác nhau.
+
+        if (action == null) {
+            listProducts(req, resp);
+            return;
+        }
+            // Ở đây Get không có action nên sẽ gọi ra ListProduct
+            // Nê muô tạo mới thì sẽ chuyên đến form thêm mới
+        switch (action) {
+            case "create":
+                showCreateForm(req, resp);
+                break;
+
+            case "edit":
+                showEditForm(req, resp);
+                break;
+
+            case "delete":
+                deleteProduct(req, resp);
+                break;
+            case "view":
+                viewProduct(req, resp);
+                break;
+
+            default:
+                listProducts(req, resp);
+        }
+    }
+
+    /* ================== POST ================== */
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        String action = req.getParameter("action");
+
+        if ("create".equals(action)) {
+            createProduct(req, resp);
+        } else if ("edit".equals(action)) {
+            updateProduct(req, resp);
+        }
+    }
+
+    /* ================== LIST ================== */
+    private void listProducts(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        List<Product> products = productDAO.getAll();
+        req.setAttribute("products", products);
+        req.getRequestDispatcher("/product-list.jsp").forward(req, resp);
+    }
+
+    /* ================== SHOW CREATE FORM ================== */
+    private void showCreateForm(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
         req.getRequestDispatcher("/create-product.jsp").forward(req, resp);
-// Phương thước doGet/ Post chỉ có thể gọi đến Controller
-// vậy nên ở đây ko có controller tương ứng cho doGet, nên phải ấy tạm create-product.jsp
-// Nếu để là /product thì Tomcat sẽ auto gọi đến product.jsp ->sai
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        super.doPost(req, resp);
-        createProduct(req, resp); // Bước 2, call Model
-        // Để không cần trển khai createProduct ở đây thì tách ra bên dưới
-        // Bước 3
-        //SetAttibute
-        //RequestDispatcher...
-    }
-
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        super.doPut(req, resp);
-    }
-
-    @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        super.doDelete(req, resp);
     }
 
     /* ================== CREATE ================== */
     private void createProduct(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
 
-        // Bước 2: Lấy dữ liệu từ form
+        // 1. Lấy dữ liệu từ form
         String name = req.getParameter("name");
-        String priceStr = req.getParameter("price");
-        String desscription = req.getParameter("desscription");
+        double price = Double.parseDouble(req.getParameter("price"));
+        int quantity = Integer.parseInt(req.getParameter("quantity"));
+        String description = req.getParameter("description");
+        String image = req.getParameter("image");
 
-        // Bước 3: Convert kiểu
-        double price = Double.parseDouble(priceStr);
-
-        // Bước 4: Đóng gói vào Model
+        // 2. Đóng gói Model
         Product product = new Product();
         product.setName(name);
         product.setPrice(price);
-        product.setDesscription(desscription);
+        product.setQuantity(quantity);
+        product.setDescription(description);
+        product.setImage(image);
 
-        // Bước 5: Gọi DAO
+        // Cách khác Lấy dữ liệu từ form và Đóng gói Model luôn
+//        Product product = new Product();
+//        product.setName(req.getParameter("name"));
+//        product.setPrice(Double.parseDouble(req.getParameter("price")));
+//        product.setQuantity(Integer.parseInt(req.getParameter("quantity")));
+//        product.setDescription(req.getParameter("description"));
+//        product.setImage(req.getParameter("image"));
+
+        // 3. Gọi DAO
         productDAO.insert(product);
 
-        // Bước 6: Redirect
+        // 4. Redirect về list
         resp.sendRedirect(req.getContextPath() + "/product");
+    }
+    /* ================= EDIT ================= */
+    private void showEditForm(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
 
+        int id = Integer.parseInt(req.getParameter("id"));
+        Product product = productDAO.getById(id);
+
+        req.setAttribute("product", product);
+        req.getRequestDispatcher("/edit-product.jsp").forward(req, resp);
     }
 
-    @Override
-    public void destroy() {
-//        super.destroy();
+    private void updateProduct(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+
+        Product product = new Product();
+        product.setId(Integer.parseInt(req.getParameter("id")));
+        product.setName(req.getParameter("name"));
+        product.setPrice(Double.parseDouble(req.getParameter("price")));
+        product.setQuantity(Integer.parseInt(req.getParameter("quantity")));
+        product.setDescription(req.getParameter("description"));
+        product.setImage(req.getParameter("image"));
+
+        productDAO.update(product);
+        resp.sendRedirect(req.getContextPath() + "/product");
     }
+
+    /* ================= DELETE ================= */
+    private void deleteProduct(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+
+        int id = Integer.parseInt(req.getParameter("id"));
+        productDAO.delete(id);
+
+        resp.sendRedirect(req.getContextPath() + "/product");
+    }
+
+    /* ================= VIEW ================= */
+    private void viewProduct(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        int id = Integer.parseInt(req.getParameter("id"));
+        Product product = productDAO.getById(id);
+
+        if (product == null) {
+            resp.sendRedirect(req.getContextPath() + "/product");
+            return;
+        }
+
+        req.setAttribute("product", product);
+        req.getRequestDispatcher("/view-product.jsp").forward(req, resp);
+    }
+
 }

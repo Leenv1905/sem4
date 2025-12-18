@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: vanth
-  Date: 12/17/2025
-  Time: 11:46 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.t2406e.javaee.model.Product" %>
 
@@ -107,10 +100,6 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
         }
 
-        .modal-content h3 {
-            margin-bottom: 15px;
-        }
-
         .modal-buttons {
             margin-top: 20px;
             display: flex;
@@ -126,20 +115,15 @@
     <p>Are you sure you want to delete this product?</p>
 
     <div class="product-info">
-<%--        <p><strong>Name:</strong> <%= product.getName() %></p>--%>
-        <p><strong>Name:</strong>Iphone 17</p>
-<%--        <p><strong>Price:</strong> $<%= product.getPrice() %></p>--%>
-    <p><strong>Price:</strong> $1.2oo</p>
-<%--        <p><strong>Description:</strong> <%= product.getDesscription() %></p>--%>
-    <p><strong>Description:</strong>The new Iphone 17 promax</p>
-<%--        <p><strong>Quantity:</strong> <%= product.getQuantity() %></p>--%>
-        <p><strong>Quantity:</strong> </p>
-
+        <p><strong>Name:</strong> <%= product.getName() %></p>
+        <p><strong>Price:</strong> $<%= product.getPrice() %></p>
+        <p><strong>Description:</strong> <%= product.getDescription() %></p>
+        <p><strong>Quantity:</strong> <%= product.getQuantity() %></p>
     </div>
 
     <div class="btn-group">
         <button class="delete-btn" onclick="openModal()">Delete</button>
-        <a href="<%= request.getContextPath() %>/product-list.jsp" class="cancel-btn">
+        <a href="<%= request.getContextPath() %>/product" class="cancel-btn">
             Cancel
         </a>
     </div>
@@ -152,11 +136,12 @@
         <p>This action cannot be undone.</p>
 
         <div class="modal-buttons">
-            <form action="<%= request.getContextPath() %>/product/delete" method="post">
-<%--                <input type="hidden" name="id" value="<%= product.getId() %>">--%>
-                <input type="hidden" name="id" value="3">
-                <button type="submit" class="delete-btn">Yes, Delete</button>
-            </form>
+            <!-- Gọi đúng ProductServlet -->
+            <a href="<%= request.getContextPath() %>/product?action=delete&id=<%= product.getId() %>"
+               class="delete-btn"
+               style="padding:10px 18px; text-decoration:none;">
+                Yes, Delete
+            </a>
 
             <button class="cancel-btn" onclick="closeModal()">Cancel</button>
         </div>
@@ -171,8 +156,4 @@
     function closeModal() {
         document.getElementById("confirmModal").style.display = "none";
     }
-</script>
-
-</body>
-</html>
-
+    </sc
