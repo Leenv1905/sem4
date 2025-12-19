@@ -51,6 +51,13 @@
             <version>8.0.33</version>
         </dependency>
 
+        <!-- JSTL 3.0 cho Jakarta / Tomcat 10.1+ -->
+        <dependency>
+            <groupId>jakarta.servlet.jsp.jstl</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

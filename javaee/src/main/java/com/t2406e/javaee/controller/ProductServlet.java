@@ -49,7 +49,7 @@ public class ProductServlet extends HttpServlet {
                 break;
 
             case "delete":
-                deleteProduct(req, resp);
+                showDeleteConfirm(req, resp);
                 break;
             case "view":
                 viewProduct(req, resp);
@@ -72,6 +72,11 @@ public class ProductServlet extends HttpServlet {
         } else if ("edit".equals(action)) {
             updateProduct(req, resp);
         }
+     else if ("delete".equals(action)) {
+            deleteProduct(req, resp);
+    }
+
+
     }
 
     /* ================== LIST ================== */
@@ -147,6 +152,17 @@ public class ProductServlet extends HttpServlet {
 
         productDAO.update(product);
         resp.sendRedirect(req.getContextPath() + "/product");
+    }
+    /* ================= SHOW DELETE ================= */
+
+    private void showDeleteConfirm(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        int id = Integer.parseInt(req.getParameter("id"));
+        Product product = productDAO.getById(id);
+
+        req.setAttribute("product", product);
+        req.getRequestDispatcher("/del-product.jsp").forward(req, resp);
     }
 
     /* ================= DELETE ================= */

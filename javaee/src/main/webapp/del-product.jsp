@@ -137,11 +137,25 @@
 
         <div class="modal-buttons">
             <!-- Gọi đúng ProductServlet -->
-            <a href="<%= request.getContextPath() %>/product?action=delete&id=<%= product.getId() %>"
-               class="delete-btn"
-               style="padding:10px 18px; text-decoration:none;">
-                Yes, Delete
-            </a>
+<%--            <a href="<%= request.getContextPath() %>/product?action=delete&id=<%= product.getId() %>"--%>
+<%--               class="delete-btn"--%>
+<%--               style="padding:10px 18px; text-decoration:none;">--%>
+<%--                Yes, Delete--%>
+<%--            </a>
+ĐANG XÓA BẰNG GET - SAI LOGIC TRONG PRODUCTSERVLET
+--%>
+            <form action="<%= request.getContextPath() %>/product?action=delete"
+                  method="post"
+                  style="margin:0;">
+
+                <input type="hidden" name="id" value="<%= product.getId() %>">
+
+                <button type="submit"
+                        class="delete-btn"
+                        style="padding:10px 18px;">
+                    Yes, Delete
+                </button>
+            </form>
 
             <button class="cancel-btn" onclick="closeModal()">Cancel</button>
         </div>
@@ -156,4 +170,4 @@
     function closeModal() {
         document.getElementById("confirmModal").style.display = "none";
     }
-    </sc
+    </script>
