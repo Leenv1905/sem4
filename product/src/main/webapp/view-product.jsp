@@ -54,8 +54,9 @@
                 </div>
 
                 <div class="ui buttons">
-                    <a href="#" class="ui green button">Buy Now</a>
-                    <a href="#" class="ui orange button">Add to Cart</a>
+                    <a href="<%= request.getContextPath() %>/cart" class="ui green button">Buy Now</a>
+                    <a href="<%= request.getContextPath() %>/cart?action=add&id=<%= p.getId() %>" class="ui orange button">Add to Cart</a>
+<%--                    Nên thêm ở đây logic ẩn nút khi quatity = 0--%>
                 </div>
             </div>
         </div>
