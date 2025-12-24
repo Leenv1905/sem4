@@ -1,0 +1,78 @@
+Ly do dùng Map thay vi dung List
+Nếu bạn dùng List<Product> để lưu giỏ hàng trong session, mỗi lần người dùng bấm “Add to Cart” cho cùng một sản phẩm, bạn thường sẽ thêm một đối tượng Product mới vào list. Kết quả: list sẽ có nhiều phần tử giống nhau (trùng id), nhưng mỗi phần tử lại không “gộp” số lượng. Điều này gây khó khăn khi:
+
+Tính tổng số lượng (phải duyệt và cộng dồn theo id).
+
+Tính tổng tiền (phải gộp các bản ghi trùng).
+
+Hiển thị (phải gom nhóm theo id trước khi render).
+
+Ví dụ (cách làm kém hiệu quả):
+
+java
+List<Product> cart = new ArrayList<>();
+// người dùng bấm add sản phẩm id=5 hai lần
+cart.add(productDAO.getById(5));
+cart.add(productDAO.getById(5));
+// cart có 2 bản ghi sản phẩm id=5, nhưng không có thông tin số lượng gộp
+Bạn buộc phải duyệt list, tìm sản phẩm cùng id, rồi hợp nhất thủ công:
+
+java
+int totalQtyForId5 = 0;
+for (Product p : cart) {
+    if (p.getId() == 5) totalQtyForId5++;
+}
+// Và nếu muốn “gộp” hiển thị, bạn phải xây dựng lại cấu trúc dữ liệu tạm thời.
+Vì sao Map<Integer, Integer> tối ưu hơn
+Giỏ hàng thực chất là ánh xạ “id sản phẩm → số lượng”. Map<Integer, Integer> mô hình hóa đúng điều đó:
+
+Không có bản ghi trùng: mỗi id là một key duy nhất.
+
+Cập nhật số lượng cực đơn giản:
+
+java
+Map<Integer, Integer> cart = new HashMap<>();
+cart.put(id, cart.getOrDefault(id, 0) + 1); // thêm 1 vào số lượng
+cart.put(id, newQty);                       // đặt số lượng mới
+cart.remove(id);                            // xóa khỏi giỏ
+Khi hiển thị, bạn chỉ cần lấy chi tiết sản phẩm theo id và gắn số lượng từ map:
+
+java
+for (Map.Entry<Integer, Integer> e : cart.entrySet()) {
+    Product p = productDAO.getById(e.getKey());
+    p.setQuantity(e.getValue()); // số lượng trong giỏ
+    // đưa vào danh sách để hiển thị trên JSP
+}
+Nếu vẫn muốn dùng List: hãy có đối tượng CartItem
+Một cách hợp lý nếu bạn muốn dùng List là không dùng List<Product>, mà dùng List<CartItem> với cấu trúc lưu cả productId và quantity. Khi thêm, bạn tìm theo productId để tăng quantity thay vì thêm phần tử trùng:
+
+java
+class CartItem {
+    int productId;
+    int quantity;
+}
+
+List<CartItem> cart = new ArrayList<>();
+
+void add(int productId) {
+    for (CartItem ci : cart) {
+        if (ci.productId == productId) {
+            ci.quantity++;
+            return;
+        }
+    }
+    CartItem ci = new CartItem();
+    ci.productId = productId;
+    ci.quantity = 1;
+    cart.add(ci);
+}
+Cách này hoạt động ổn, nhưng bạn vẫn phải duyệt list để tìm item theo id (O(n)). Với Map, thao tác là O(1) và dữ liệu không bao giờ trùng.
+
+Kết luận ngắn
+List<Product> dễ bị “trùng phần tử” cho cùng một sản phẩm và cần xử lý gộp phức tạp.
+
+Map<Integer, Integer> biểu diễn đúng mô hình “id → số lượng”, tránh trùng lặp, cập nhật nhanh, hiển thị thuận tiện.
+
+Nếu thích List, hãy dùng List<CartItem> và tự quản lý quantity; tuy nhiên vẫn kém hiệu quả hơn Map.
+
+https://copilot.microsoft.com/chats/LE3yvYq469yGCAdjhoEbf
