@@ -111,11 +111,25 @@ public class CartServlet extends HttpServlet {
         Map<Integer, Integer> cart = (Map<Integer, Integer>) session.getAttribute("cart");
 
         if (cart == null) {
-            cart = new HashMap<>();
+//            cart = new HashMap<>();
+            cart = new LinkedHashMap<>(); // giữ thứ tự thêm sản phẩm
         }
 
+//        cart.put(id, cart.getOrDefault(id, 0) + 1);
+
+// ==== ĐO THỜI GIAN THÊM 1 SẢN PHẨM VÀO GIỎ HÀNG ====
+        long start = System.nanoTime();
         cart.put(id, cart.getOrDefault(id, 0) + 1);
+        long end = System.nanoTime();
+        System.out.println("Thời gian thêm vào cart: " + (end - start) + " ns");
+// ==== ĐO THỜI GIAN THÊM 1 SẢN PHẨM VÀO GIỎ HÀNG ====
+
         session.setAttribute("cart", cart);
+
+        /* ================== LOG DEMO ================== */
+        System.out.println("=== CART ORDER (LinkedHashMap) ===");
+        cart.forEach((k, v) -> System.out.println("ProductID=" + k + ", Qty=" + v));
+        System.out.println("==================================");
 
         // Lấy lại danh sách sản phẩm để hiển thị
         List<Product> products = productDAO.getAll();

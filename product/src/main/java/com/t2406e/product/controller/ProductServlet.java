@@ -75,7 +75,14 @@ import java.util.List;
     private void listProducts(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
+//        List<Product> products = productDAO.getAll();
+// === CHECK THỜI GIAN THỰC THI ===
+        long start = System.nanoTime();
         List<Product> products = productDAO.getAll();
+        long end = System.nanoTime();
+        System.out.println("getAll() mất: " + (end - start) + " ns");
+// === CHECK THỜI GIAN THỰC THI ===
+
         req.setAttribute("products", products);
         req.getRequestDispatcher("/product-list.jsp").forward(req, resp);
     }
