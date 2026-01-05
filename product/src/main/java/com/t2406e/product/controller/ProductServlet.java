@@ -2,12 +2,14 @@ package com.t2406e.product.controller;
 
 import com.t2406e.product.dao.ProductDAO;
 import com.t2406e.product.model.Product;
+import com.t2406e.product.model.User;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.util.List;
@@ -84,6 +86,10 @@ import java.util.List;
 // === CHECK THỜI GIAN THỰC THI ===
 
         req.setAttribute("products", products);
+        //== NẾU NHIỀU TRANG CẦN DÙNG==
+//        String view = req.getParameter("view");
+//        if (view == null) view = "product-list.jsp";
+//        req.getRequestDispatcher("/" + view).forward(req, resp);
         req.getRequestDispatcher("/product-list.jsp").forward(req, resp);
     }
 
@@ -149,6 +155,16 @@ import java.util.List;
     private void showDeleteConfirm(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
+        // Không phải ADMIN → không cho mở trang confirm
+        HttpSession session = req.getSession(false);
+        User loginUser = (User) session.getAttribute("loginUser");
+
+        if (loginUser == null || !"ADMIN".equals(loginUser.getRole())) {
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+        // Không phải ADMIN → không cho mở trang confirm
+
         int id = Integer.parseInt(req.getParameter("id"));
         Product product = productDAO.getById(id);
 
@@ -160,12 +176,30 @@ import java.util.List;
     private void deleteProduct(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
 
+        HttpSession session = req.getSession(false);
+
+        // Kiểm soát đăng nhập
+        // Không caanf thết vì đã có AuthFilter. Tuy nhiên để code đây để tham khảo
+        // Có những chiết lý code sẽ để Servlet tự phòng thủ, đề phòng bị tăắt AuthFilter
+        if (session == null) {
+            resp.sendRedirect(req.getContextPath() + "/auth?action=login");
+            return;
+        }
+
+        User loginUser = (User) session.getAttribute("loginUser");
+
+        // CHỉ admin mới đươ quyền xóa
+        if (loginUser == null || !"ADMIN".equals(loginUser.getRole())) {
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN,
+                    "You are not allowed to delete product");
+            return;
+        }
+
         int id = Integer.parseInt(req.getParameter("id"));
         productDAO.delete(id);
 
         resp.sendRedirect(req.getContextPath() + "/product");
     }
-
     /* ================= VIEW ================= */
     private void viewProduct(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {

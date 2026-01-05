@@ -57,7 +57,7 @@ import java.io.IOException;
 
             if (user != null) {
                 req.getSession().setAttribute("loginUser", user);
-                resp.sendRedirect(req.getContextPath() + "/product");
+                resp.sendRedirect(req.getContextPath() + "/");
                 //AuthServlet KHÔNG redirect ngược lại /auth khi đã login
             } else {
                 req.setAttribute("error", "Invalid username or password");

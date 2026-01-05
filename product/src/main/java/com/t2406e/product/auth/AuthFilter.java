@@ -1,5 +1,6 @@
 package com.t2406e.product.auth;
 
+import com.t2406e.product.model.User;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.*;
@@ -32,6 +33,16 @@ public class AuthFilter implements Filter {
             chain.doFilter(req, res);
             return;
         }
+
+        // == CHẶN XÓA NẾU KHÔNG PHẢI ADMIN==
+//        if (uri.contains("action=delete")) {
+//            User user = (User) request.getSession().getAttribute("loginUser");
+//            if (!"ADMIN".equals(user.getRole())) {
+//                response.sendError(403);
+//                return;
+//            }
+//        }
+
 
         // ===== 3. KIỂM TRA ĐĂNG NHẬP =====
         HttpSession session = request.getSession(false);
