@@ -78,7 +78,7 @@
                     <a class="item" href="#">Login</a>
                     <a class="item" href="#">Register</a>
                     <div class="divider"></div>
-                    <a class="item" href="home/my-account.jsp">My Setting</a>
+                    <a class="item" href="orders">My Setting</a>
                     <a class="item" href="#">Logout</a>
                 </div>
             </div>

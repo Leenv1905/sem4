@@ -162,4 +162,32 @@ public class ProductDAO {
         p.setImage(rs.getString("image"));
         return p;
     }
+
+    /* ================= UPDATE STOCK ================= */
+    public void updateStock(Connection conn, int productId, int newQuantity)
+            throws SQLException {
+
+        String sql = "UPDATE products SET quantity = ? WHERE id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, newQuantity);
+            ps.setInt(2, productId);
+            ps.executeUpdate();
+        }
+    }
+
+    /* ================= PHƯƠNG THỨC HOÀN KHO ================= */
+    public void restoreStock(Connection conn, int productId, int quantity)
+            throws SQLException {
+
+        String sql = "UPDATE products SET quantity = quantity + ? WHERE id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, quantity);
+            ps.setInt(2, productId);
+            ps.executeUpdate();
+        }
+    }
+
+
 }

@@ -6,6 +6,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.*" %>
+<%@ page import="com.t2406e.product.model.*" %>
+
 <html>
 <head>
     <title>My Account</title>
@@ -48,7 +51,8 @@
                 <div class="menu">
                     <a class="item active">Orders</a>
                     <a class="item">My Setting</a>
-                    <a class="item">Logout</a>
+                    <a class="item"
+                       href="<%= request.getContextPath() %>/auth?action=logout">Logout</a>
                 </div>
             </div>
         </div>
@@ -57,8 +61,8 @@
 
 <!-- ===== MAIN CONTENT ===== -->
 <div class="ui fluid container main-container">
-
     <div class="ui raised very padded segment">
+
         <h2 class="ui header">
             <i class="shopping bag icon"></i>
             <div class="content">
@@ -67,10 +71,28 @@
             </div>
         </h2>
 
-        <!-- ===== ORDER #1 ===== -->
+        <%
+            Map<Order, List<OrderItem>> orderMap =
+                    (Map<Order, List<OrderItem>>) request.getAttribute("orderMap");
+
+            if (orderMap == null || orderMap.isEmpty()) {
+        %>
+        <div class="ui info message">
+            You have no orders yet.
+        </div>
+        <%
+        } else {
+            for (Map.Entry<Order, List<OrderItem>> entry : orderMap.entrySet()) {
+                Order order = entry.getKey();
+                List<OrderItem> items = entry.getValue();
+        %>
+
+        <!-- ===== ORDER ===== -->
         <div class="ui segment">
             <h4 class="ui dividing header">
-                Order Code: <span class="ui blue label">ORD-1001</span>
+                Order Code:
+                <span class="ui blue label">ORD-<%= order.getId() %></span>
+                <span class="ui right floated label"><%= order.getStatus() %></span>
             </h4>
 
             <table class="ui celled table">
@@ -82,69 +104,50 @@
                     <th>Price</th>
                 </tr>
                 </thead>
+
                 <tbody>
+                <%
+                    for (OrderItem item : items) {
+                        Product p = (Product) request.getAttribute(
+                                "product_" + item.getProductId()
+                        );
+                %>
                 <tr>
                     <td>
-                        <img src="https://picsum.photos/100/80?1"
+                        <img src="<%= p != null ? p.getImage() : "" %>"
                              class="ui rounded image product-img">
                     </td>
-                    <td>iPhone 15 Pro</td>
-                    <td>1</td>
-                    <td>$1200</td>
+                    <td><%= p != null ? p.getName() : "Unknown" %></td>
+                    <td><%= item.getQuantity() %></td>
+                    <td>$<%= item.getPrice() %></td>
                 </tr>
-                <tr>
-                    <td>
-                        <img src="https://picsum.photos/100/80?2"
-                             class="ui rounded image product-img">
-                    </td>
-                    <td>AirPods Pro</td>
-                    <td>2</td>
-                    <td>$500</td>
-                </tr>
+                <%
+                    }
+                %>
                 </tbody>
+
                 <tfoot>
                 <tr>
                     <th colspan="3" class="right aligned">Total</th>
-                    <th>$1700</th>
+                    <th>$<%= order.getTotalPrice() %></th>
                 </tr>
                 </tfoot>
             </table>
+
+            <% if ("NEW".equals(order.getStatus())) { %>
+            <form method="post"
+                  action="<%= request.getContextPath() %>/orders"
+                  onsubmit="return confirm('Are you sure you want to cancel this order?');">
+                <input type="hidden" name="orderId" value="<%= order.getId() %>">
+                <button class="ui red button">Cancel Order</button>
+            </form>
+            <% } %>
         </div>
 
-        <!-- ===== ORDER #2 ===== -->
-        <div class="ui segment">
-            <h4 class="ui dividing header">
-                Order Code: <span class="ui green label">ORD-1002</span>
-            </h4>
-
-            <table class="ui celled table">
-                <thead>
-                <tr>
-                    <th>Image</th>
-                    <th>Product Name</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>
-                        <img src="https://picsum.photos/100/80?3"
-                             class="ui rounded image product-img">
-                    </td>
-                    <td>MacBook Pro M3</td>
-                    <td>1</td>
-                    <td>$2400</td>
-                </tr>
-                </tbody>
-                <tfoot>
-                <tr>
-                    <th colspan="3" class="right aligned">Total</th>
-                    <th>$2400</th>
-                </tr>
-                </tfoot>
-            </table>
-        </div>
+        <%
+                }
+            }
+        %>
 
     </div>
 </div>
@@ -159,4 +162,5 @@
 <script src="https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.js"></script>
 </body>
 </html>
+
 

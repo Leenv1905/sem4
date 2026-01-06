@@ -15,9 +15,102 @@
     <!-- Semantic UI CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css">
 </head>
+
+<%--<style>--%>
+<%--    .left-sidebar {--%>
+<%--        position: fixed;--%>
+<%--        top: 60px;--%>
+<%--        left: 0;--%>
+<%--        width: 220px;--%>
+<%--        height: 100%;--%>
+<%--        background: #1b1c1d;--%>
+<%--        padding-top: 10px;--%>
+<%--        z-index: 1000;--%>
+<%--    }--%>
+
+<%--    .left-sidebar .ui.vertical.menu {--%>
+<%--        width: 100%;--%>
+<%--        border: none;--%>
+<%--        box-shadow: none;--%>
+<%--        background: transparent;--%>
+<%--    }--%>
+
+<%--    .left-sidebar .ui.vertical.menu .item {--%>
+<%--        color: white !important;--%>
+<%--        font-size: 16px;--%>
+<%--        padding: 15px 20px !important;--%>
+<%--    }--%>
+
+<%--    .left-sidebar .ui.vertical.menu .item:hover {--%>
+<%--        background: #27292a !important;--%>
+<%--    }--%>
+
+<%--    /* Đẩy nội dung sang phải */--%>
+<%--    .main-content {--%>
+<%--        margin-left: 250px !important;--%>
+<%--    }--%>
+<%--    .main-content {--%>
+<%--        position: relative;--%>
+<%--        z-index: 1;--%>
+<%--    }--%>
+
+
+<%--</style>--%>
+
 <body style="background: linear-gradient(135deg, #667eea, #764ba2);">
 
-<div class="ui fluid container" style="margin-top: 60px; width: 80%;">
+<%--============== APP BAR ===============--%>
+<div class="ui fixed inverted menu" style="width:100%;">
+    <div class="ui container">
+        <a href="<%= request.getContextPath() %>/" class="header item">
+            🛠 Home
+        </a>
+
+        <a href="<%= request.getContextPath() %>/product"
+           class="item active">Products</a>
+
+        <a href="<%= request.getContextPath() %>/admin/orders"
+           class="item">Orders</a>
+
+        <a href="#"
+           class="item">Users</a>
+
+        <div class="right menu">
+            <div class="ui simple dropdown item">
+                <i class="user icon"></i> Admin
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    <a class="item"
+                       href="<%= request.getContextPath() %>/auth?action=logout">
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- ================= SIDEBAR ================= -->
+<%--<div class="left-sidebar">--%>
+<%--    <div class="ui vertical menu">--%>
+<%--        <a href="<%= request.getContextPath() %>/product" class="item">--%>
+<%--            <i class="boxes icon"></i> Products--%>
+<%--        </a>--%>
+
+<%--        <a href="<%= request.getContextPath() %>/admin/orders" class="item">--%>
+<%--            <i class="shopping bag icon"></i> Orders--%>
+<%--        </a>--%>
+
+<%--        <a href="<%= request.getContextPath() %>/admin/users" class="item">--%>
+<%--            <i class="users icon"></i> Users--%>
+<%--        </a>--%>
+<%--    </div>--%>
+<%--</div>--%>
+
+<%--=============== MAIN ===============--%>
+
+<div class="ui fluid container main-content" style="margin-top: 60px; width: 80%;">
+
     <div class="ui raised very padded segment" style="width:100%;">
         <h2 class="ui center aligned header">Product List</h2>
 
@@ -88,7 +181,7 @@
             <%
                 }
             %>
-<%--            // ĐOạn code hiện thông báo--%>
+            <%--            // ĐOạn code hiện thông báo--%>
             <% String message = (String) request.getAttribute("message"); %>
             <% if (message != null) { %>
             <div class="ui positive message">
