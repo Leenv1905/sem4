@@ -35,23 +35,30 @@ import java.util.Map;
 
             HttpSession session = req.getSession(false);
             User user = (User) session.getAttribute("loginUser");
-
+            // LẤY USER ĐANG ĐĂNG NHẬP
             try {
                 List<Order> orders = orderDAO.getByUserId(user.getId());
+            // LẤY DANH SÁCH ĐƠN HÀNG CỦA USER
+                // USER CHỈ ĐƯỢC XEM ĐƠN CỦA MÌNH getByUserId
 
                 // Map<Order, List<OrderItem>>
                 Map<Order, List<OrderItem>> orderMap = new LinkedHashMap<>();
+            // TẠO CẤU TRÚC DỮ LIỆU, DÙNG LINKEDHASHMAP ĐỂ GIỮ THỨ TỰ ĐƠN HÀNG
 
                 for (Order o : orders) {
                     List<OrderItem> items = itemDAO.getByOrderId(o.getId());
+            // LẤY CHI TIẾT ĐƠN HÀNG THEO MỖI ĐƠN
 
-                    // Gắn thêm Product vào request scope
+            // Gắn thêm Product vào request scope
+            // mỖI OrderItem chỉ có productId, price, quantity
+            // Nên khi frontend cần ảnh, tên thì phải gắn cả product vào
                     for (OrderItem item : items) {
                         Product p = productDAO.getById(item.getProductId());
                         req.setAttribute("product_" + item.getProductId(), p);
                     }
 
                     orderMap.put(o, items);
+            // GỘP ĐƠN HÀNG VÀ CHI TIẾT ĐƠN VÀO MAP, TẠO CẤU TRÚC HOÀN CHỈNH CHO VIEW
                 }
 
                 req.setAttribute("orderMap", orderMap);
