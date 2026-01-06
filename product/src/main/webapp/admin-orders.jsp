@@ -17,7 +17,7 @@
           href="https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css">
 
     <style>
-        body { background: #f5f6fa; }
+        body { background: #e4eeee; }
         .main-container { margin-top: 80px; width: 90%; }
         .product-img {
             width: 50px;

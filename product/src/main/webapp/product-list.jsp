@@ -57,7 +57,7 @@
 
 <%--</style>--%>
 
-<body style="background: linear-gradient(135deg, #667eea, #764ba2);">
+<body style="background: linear-gradient(135deg, #e4eeee, #e4eeee);">
 
 <%--============== APP BAR ===============--%>
 <div class="ui fixed inverted menu" style="width:100%;">
@@ -182,14 +182,14 @@
                 }
             %>
             <%--            // ĐOạn code hiện thông báo--%>
-            <% String message = (String) request.getAttribute("message"); %>
-            <% if (message != null) { %>
-            <div class="ui positive message">
-                <i class="close icon"></i>
-                <div class="header">Success</div>
-                <p><%= message %></p>
-            </div>
-            <% } %>
+<%--            <% String message = (String) request.getAttribute("message"); %>--%>
+<%--            <% if (message != null) { %>--%>
+<%--            <div class="ui positive message">--%>
+<%--                <i class="close icon"></i>--%>
+<%--                <div class="header">Success</div>--%>
+<%--                <p><%= message %></p>--%>
+<%--            </div>--%>
+<%--            <% } %>--%>
 
             </tbody>
         </table>

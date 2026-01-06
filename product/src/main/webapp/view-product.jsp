@@ -28,6 +28,9 @@
             <a href="<%= request.getContextPath() %>/product" class="ui blue link">
                 ← Back to Product List
             </a>
+            <a href="<%= request.getContextPath() %>/view-product" class="ui blue link">
+                ← Back to Home
+            </a>
         </div>
 
         <!-- Product detail -->
@@ -55,8 +58,18 @@
 
                 <div class="ui buttons">
                     <a href="<%= request.getContextPath() %>/cart" class="ui green button">Buy Now</a>
-                    <a href="<%= request.getContextPath() %>/cart?action=add&id=<%= p.getId() %>" class="ui orange button">Add to Cart</a>
+<%--                    <a href="<%= request.getContextPath() %>/cart?action=add&id=<%= p.getId() %>" class="ui orange button">Add to Cart</a>--%>
 <%--                    Nên thêm ở đây logic ẩn nút khi quatity = 0--%>
+                    <% if (p.getQuantity() > 0) { %>
+                    <a href="<%= request.getContextPath() %>/cart?action=add&id=<%= p.getId() %>"
+                       class="ui blue mini button">
+                        <i class="shopping cart icon"></i> Add to Cart
+                    </a>
+                    <% } else { %>
+                    <button class="ui disabled mini button">
+                        <i class="shopping cart icon"></i> Out Stock Rồi !
+                    </button>
+                    <% } %>
                 </div>
             </div>
         </div>

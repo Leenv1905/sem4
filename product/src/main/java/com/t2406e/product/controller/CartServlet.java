@@ -136,7 +136,7 @@ public class CartServlet extends HttpServlet {
         req.setAttribute("products", products);
         req.setAttribute("message", "Sản phẩm đã được thêm vào giỏ hàng thành công!");
 
-        req.getRequestDispatcher("/product-list.jsp").forward(req, resp);
+        req.getRequestDispatcher("/index2.jsp").forward(req, resp);
     }
 
 

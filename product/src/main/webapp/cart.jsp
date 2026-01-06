@@ -74,9 +74,9 @@
         </div>
 
         <div class="ui buttons">
-            <a href="<%= request.getContextPath() %>/product" class="ui button grey">Back to Product List</a>
+            <a href="<%= request.getContextPath() %>/view-product" class="ui button grey">Home</a>
             <a href="<%= request.getContextPath() %>/cart?action=clear" class="ui button red">Clear Cart</a>
-            <a href="#" class="ui green button">Checkout (Mock)</a>
+<%--            <a href="#" class="ui green button">Checkout (Mock)</a>--%>
             <form method="post" action="${pageContext.request.contextPath}/checkout">
                 <button class="ui primary button">Xác nhận mua hàng</button>
             </form>

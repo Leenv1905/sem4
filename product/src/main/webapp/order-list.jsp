@@ -19,7 +19,7 @@
 
     <style>
         body {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #fff, #fff);
         }
         .main-container {
             margin-top: 80px;
