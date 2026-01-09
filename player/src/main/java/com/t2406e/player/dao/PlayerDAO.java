@@ -106,41 +106,69 @@ public class PlayerDAO {
             ps.executeUpdate();
         }
     }
-// Phương thức này hiển thị dữ liệu có liên kết bảng lấy dữ liệu từ PlayerView
-    public List<PlayerView> findAllWithIndex() {
-        List<PlayerView> list = new ArrayList<>();
+
+    public void updatePlayer(int playerId, String name, String fullName, String age)
+            throws Exception {
 
         String sql = """
-        SELECT 
-            pi.id,
-            p.name AS player_name,
-            p.age,
-            i.name AS index_name,
-            pi.value
-        FROM player_index pi
-        JOIN player p ON pi.player_id = p.player_id
-        JOIN indexer i ON pi.index_id = i.index_id
-        ORDER BY pi.id
+        UPDATE player
+        SET name = ?, full_name = ?, age = ?
+        WHERE player_id = ?
     """;
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                PlayerView pv = new PlayerView();
-                pv.setId(rs.getInt("id"));
-                pv.setPlayerName(rs.getString("player_name"));
-                pv.setAge(rs.getString("age"));
-                pv.setIndexName(rs.getString("index_name"));
-                pv.setValue(rs.getFloat("value"));
-                list.add(pv);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            ps.setString(1, name);
+            ps.setString(2, fullName);
+            ps.setString(3, age);
+            ps.setInt(4, playerId);
+            ps.executeUpdate();
         }
-        return list;
     }
+
+    // Phương thức này hiển thị dữ liệu có liên kết bảng lấy dữ liệu từ PlayerView
+public List<PlayerView> findAllWithIndex() {
+    List<PlayerView> list = new ArrayList<>();
+
+    String sql = """
+    SELECT
+        pi.id            AS pi_id,
+        p.player_id      AS p_id,
+        p.name,
+        p.full_name,
+        p.age,
+        i.index_id,
+        i.name           AS index_name,
+        pi.value
+    FROM player_index pi
+    JOIN player p ON pi.player_id = p.player_id
+    JOIN indexer i ON pi.index_id = i.index_id
+""";
+
+
+    try (Connection conn = DBConnection.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            PlayerView pv = new PlayerView();
+            pv.setPlayerIndexId(rs.getInt("pi_id"));
+            pv.setPlayerId(rs.getInt("p_id"));
+            pv.setPlayerName(rs.getString("name"));
+            pv.setFullName(rs.getString("full_name"));
+            pv.setAge(rs.getString("age"));
+            pv.setIndexId(rs.getInt("index_id"));
+            pv.setIndexName(rs.getString("index_name"));
+            pv.setValue(rs.getFloat("value"));
+            list.add(pv);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return list;
+}
+
 
 
 }

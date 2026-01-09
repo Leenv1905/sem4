@@ -1,10 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="com.t2406e.player.model.Player" %>
+<%@ page import="com.t2406e.player.model.Indexer" %>
+<%@ page import="com.t2406e.player.model.PlayerIndex" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.t2406e.player.model.PlayerView" %>
+
 
 <%
-    Player p = (Player) request.getAttribute("player");
-    boolean isEdit = (p != null);
+    PlayerView editPlayer =
+            (PlayerView) request.getAttribute("player");
+    boolean isEdit = (editPlayer != null);
 %>
+
 
 <html>
 <head>
@@ -17,23 +24,48 @@
 
 <form method="post" action="player">
     <input type="hidden" name="action" value="<%= isEdit ? "update" : "create" %>">
+
     <% if (isEdit) { %>
-    <input type="hidden" name="id" value="<%=p.getPlayerId()%>">
+<%--    <input type="hidden" name="id" value="<%=editPlayer.getPlayerIndexId()%>">--%>
+    <input type="hidden" name="id" value="<%=editPlayer.getPlayerIndexId()%>">
+    <input type="hidden" name="playerId" value="<%=editPlayer.getPlayerId()%>">
+
     <% } %>
 
-    <label>Player name</label>
-    <input name="name" value="<%= isEdit ? p.getName() : "" %>">
+    Name:
+    <input name="name" value="<%= isEdit ? editPlayer.getPlayerName() : "" %>"><br>
 
-    <label>Full name</label>
-    <input name="fullName" value="<%= isEdit ? p.getFullName() : "" %>">
+    Full name:
+    <input name="fullName" value=""><br>
 
-    <label>Age</label>
-    <input name="age" value="<%= isEdit ? p.getAge() : "" %>">
+    Age:
+    <input name="age" value="<%= isEdit ? editPlayer.getAge() : "" %>"><br>
 
-    <button class="btn-primary">
-        <%= isEdit ? "Update" : "Add" %>
-    </button>
+    Index:
+    <select name="indexId">
+        <%
+            List<Indexer> indexers =
+                    (List<Indexer>) request.getAttribute("indexers");
+
+            if (indexers != null) {
+                for (Indexer i : indexers) {
+        %>
+        <option value="<%=i.getIndexId()%>"
+                <%= isEdit && i.getIndexId() == editPlayer.getIndexId() ? "selected" : "" %>>
+            <%=i.getName()%>
+        </option>
+        <%
+                }
+            }
+        %>
+    </select>
+
+    Value:
+    <input name="value" value="<%= isEdit ? editPlayer.getValue() : "" %>"><br>
+
+    <button><%= isEdit ? "Update" : "Add" %></button>
 </form>
+
 
 <a href="player">← Back</a>
 

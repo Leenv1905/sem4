@@ -9,33 +9,54 @@
 </head>
 <body>
 
-<h2>Player Information</h2>
+<h2 class="title">Player Information</h2>
 
-<form method="post" action="player">
-    Name: <input name="name"><br>
-    Full name: <input name="fullName"><br>
-    Age: <input name="age"><br>
+<form method="post" action="player" class="player-form">
 
-    Index:
-    <select name="indexId">
-        <%
-            List<Indexer> indexers =
-                    (List<Indexer>) request.getAttribute("indexers");
+    <!-- Row 1 -->
+    <div class="form-item">
+        <label>Player name</label>
+        <input name="name" placeholder="Player name">
+    </div>
 
-            if (indexers != null) {
-                for (Indexer i : indexers) {
-        %>
-        <option value="<%=i.getIndexId()%>"><%=i.getName()%></option>
-        <%
+    <div class="form-item">
+        <label>Player age</label>
+        <input name="age" placeholder="Player age">
+    </div>
+
+    <!-- Row 2 -->
+    <div class="form-item">
+        <label>Full name</label>
+        <input name="fullName" placeholder="Full name">
+    </div>
+
+    <div class="form-item">
+        <label>Index name</label>
+        <select name="indexId">
+            <%
+                List<Indexer> indexers =
+                        (List<Indexer>) request.getAttribute("indexers");
+                if (indexers != null) {
+                    for (Indexer i : indexers) {
+            %>
+            <option value="<%=i.getIndexId()%>"><%=i.getName()%></option>
+            <%
+                    }
                 }
-            }
-        %>
+            %>
+        </select>
+    </div>
 
-    </select>
+    <!-- Row 3 -->
+    <div class="form-item">
+        <label>Value</label>
+        <input name="value" placeholder="Value">
+    </div>
 
-    Value: <input name="value"><br>
+    <div class="form-action">
+        <button type="submit">Add</button>
+    </div>
 
-    <button>Add</button>
 </form>
 
 <hr>
@@ -45,6 +66,7 @@
     <tr>
         <th>Id</th>
         <th>Player name</th>
+        <th>Player full name</th>
         <th>Player age</th>
         <th>Index name</th>
         <th>Value</th>
@@ -56,19 +78,28 @@
     <%
         List<PlayerView> players =
                 (List<PlayerView>) request.getAttribute("players");
-        for (PlayerView p : players) {
+
+        if (players != null) {
+            for (PlayerView p : players) {
     %>
     <tr>
-        <td><%=p.getId()%></td>
+        <td><%=p.getPlayerIndexId()%></td>
         <td><%=p.getPlayerName()%></td>
+        <td><%=p.getFullName()%></td>
         <td><%=p.getAge()%></td>
         <td><%=p.getIndexName()%></td>
         <td><%=p.getValue()%></td>
         <td>
-            ✏️ 🗑️
+            <a href="player?action=edit&id=<%=p.getPlayerIndexId()%>">✏️</a>
+            |
+            <a href="player?action=delete&id=<%=p.getPlayerIndexId()%>"
+               onclick="return confirm('Xóa?');">🗑️</a>
         </td>
     </tr>
-    <% } %>
+    <%
+            }
+        }
+    %>
     </tbody>
 </table>
 <div class="table-footer">

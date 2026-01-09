@@ -16,6 +16,7 @@ public class PlayerServlet extends HttpServlet {
     private IndexerDAO indexerDAO = new IndexerDAO();
     private PlayerIndexDAO playerIndexDAO = new PlayerIndexDAO();
 
+    // ===================== GET =====================
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -23,23 +24,21 @@ public class PlayerServlet extends HttpServlet {
         String action = req.getParameter("action");
 
         try {
-            // ===== EDIT =====
+            // ===== EDIT (player_index) =====
             if ("edit".equals(action)) {
-                int id = Integer.parseInt(req.getParameter("id"));
-                req.setAttribute("player", playerDAO.findById(id));
+                int piId = Integer.parseInt(req.getParameter("id"));
+
+                req.setAttribute("player", playerIndexDAO.findById(piId));
                 req.setAttribute("indexers", indexerDAO.findAll());
+
                 req.getRequestDispatcher("/player-form.jsp").forward(req, resp);
                 return;
             }
 
-            // ===== DELETE =====
+            // ===== DELETE (player_index) =====
             if ("delete".equals(action)) {
-                int id = Integer.parseInt(req.getParameter("id"));
-
-                // ❗ XÓA BẢNG TRUNG GIAN TRƯỚC
-                playerIndexDAO.deleteByPlayerId(id);
-                playerDAO.delete(id);
-
+                int piId = Integer.parseInt(req.getParameter("id"));
+                playerIndexDAO.deleteById(piId);
                 resp.sendRedirect("player");
                 return;
             }
@@ -54,6 +53,7 @@ public class PlayerServlet extends HttpServlet {
         }
     }
 
+    // ===================== POST =====================
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
@@ -61,13 +61,38 @@ public class PlayerServlet extends HttpServlet {
         String action = req.getParameter("action");
 
         try {
+            // ===== UPDATE (chỉ update index + value) =====
+            if ("update".equals(action)) {
+
+                int piId = Integer.parseInt(req.getParameter("id"));
+                int playerId = Integer.parseInt(req.getParameter("playerId"));
+
+                String name = req.getParameter("name");
+                String fullName = req.getParameter("fullName");
+                String age = req.getParameter("age");
+
+                int indexId = Integer.parseInt(req.getParameter("indexId"));
+                float value = Float.parseFloat(req.getParameter("value"));
+
+                // update PLAYER
+                playerDAO.updatePlayer(playerId, name, fullName, age);
+
+                // update PLAYER_INDEX
+                playerIndexDAO.update(piId, indexId, value);
+
+                resp.sendRedirect("player");
+                return;
+            }
+
+
+            // ===== CREATE =====
             String name = req.getParameter("name");
             String fullName = req.getParameter("fullName");
             String age = req.getParameter("age");
             int indexId = Integer.parseInt(req.getParameter("indexId"));
             float value = Float.parseFloat(req.getParameter("value"));
 
-            // ===== VALIDATION =====
+            // VALIDATION CREATE
             if (name == null || name.isBlank()
                     || fullName == null || fullName.isBlank()
                     || age == null || !age.matches("\\d+")) {
@@ -76,32 +101,16 @@ public class PlayerServlet extends HttpServlet {
                 return;
             }
 
-            // ===== UPDATE =====
-            if ("update".equals(action)) {
-                int id = Integer.parseInt(req.getParameter("id"));
+            Player p = new Player();
+            p.setName(name);
+            p.setFullName(fullName);
+            p.setAge(age);
 
-                Player p = new Player();
-                p.setPlayerId(id);
-                p.setName(name);
-                p.setFullName(fullName);
-                p.setAge(age);
+            // INSERT PLAYER
+            int playerId = playerDAO.insert(p);
 
-                playerDAO.update(p);
-
-            }
-            // ===== CREATE =====
-            else {
-                Player p = new Player();
-                p.setName(name);
-                p.setFullName(fullName);
-                p.setAge(age);
-
-                // 🔑 INSERT PLAYER
-                int playerId = playerDAO.insert(p);
-
-                // 🔑 INSERT PLAYER_INDEX
-                playerIndexDAO.insert(playerId, indexId, value);
-            }
+            // INSERT PLAYER_INDEX
+            playerIndexDAO.insert(playerId, indexId, value);
 
             resp.sendRedirect("player");
 
