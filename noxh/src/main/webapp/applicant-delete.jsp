@@ -1,16 +1,30 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: vanth
-  Date: 12/29/2025
-  Time: 8:46 PM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page import="com.t2406e.noxh.model.Applicant" %>
+
+<%
+    Applicant applicant = (Applicant) request.getAttribute("applicant");
+%>
+
 <html>
-  <head>
-    <title>$Title$</title>
-  </head>
-  <body>
-  $END$
-  </body>
+<head>
+    <title>Xóa hồ sơ</title>
+</head>
+<body>
+
+<h2>Xác nhận xóa hồ sơ</h2>
+
+<p>
+    Bạn có chắc chắn muốn xóa hồ sơ của:
+    <strong><%= applicant.getName() %></strong> ?
+</p>
+
+<form method="post" action="applicant">
+    <input type="hidden" name="action" value="delete"/>
+    <input type="hidden" name="id" value="<%= applicant.getId() %>"/>
+
+    <button type="submit">Xóa</button>
+    <a href="applicant">Hủy</a>
+</form>
+
+</body>
 </html>
