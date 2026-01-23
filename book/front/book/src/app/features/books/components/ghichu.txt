@@ -1,0 +1,49 @@
+features/books/
+├── pages/
+│   ├── book-list.page      ← /books
+│   ├── book-detail.page    ← /books/:id
+│
+├── components/
+│   ├── book-card           ← hiển thị 1 cuốn sách
+│   ├── book-gallery        ← list ảnh sách
+│   ├── book-meta           ← author + publisher
+Những thứ KHÔNG nên nằm trong components/
+
+❌ Trang có URL (/books/:id)
+❌ Đọc ActivatedRoute
+❌ Gọi HttpClient
+❌ Điều hướng router
+❌ Xử lý nghiệp vụ
+
+👉 Những thứ này bắt buộc là Page
+
+👉 Component đúng nghĩa dùng khi nào?
+
+Ví dụ đúng cho components/:
+
+BookCardComponent
+
+BookAuthorBadgeComponent
+
+ConfirmDialogComponent
+
+RatingStarsComponent
+
+📌 Các component này:
+
+Không biết router
+
+Không gọi API
+
+Có thể reuse ở admin / home
+
+
+
+
+So sánh cấu truúc Backend và Frontend:
+| Backend            | Frontend        |
+| ------------------ | --------------- |
+| Controller         | Page            |
+| Service            | Angular Service |
+| DTO                | Model           |
+| Thymeleaf fragment | Component       |

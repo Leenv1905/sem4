@@ -1,0 +1,11 @@
+<div *ngIf="book; else notFound" class="detail">
+  <img [src]="book.image" />
+  <h2>{{ book.title }}</h2>
+
+  <p><b>Author:</b> {{ book.author }}</p>
+  <p><b>Publisher:</b> {{ book.publisher }}</p>
+</div>
+
+<ng-template #notFound>
+  <p>Book not found</p>
+</ng-template>

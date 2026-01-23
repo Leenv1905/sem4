@@ -1,0 +1,13 @@
+<div class="book-grid">
+  <div
+    class="book-card"
+    *ngFor="let b of books$ | async"
+    (click)="goDetail(b)"
+  >
+<!--    <img [src]="b.image" />-->
+    <img [src]="b.image" />
+    <h3>{{ b.title }}</h3>
+    <p>{{ b.author }}</p>
+  </div>
+</div>
+
