@@ -1,0 +1,42 @@
+        CẤU TRÚC MẪUTOANFNF DỰ ÁN - ĐẢM BẢO SCALE SAU NÀY
+src/
+├── app/
+│   ├── core/                 # Dùng chung toàn app
+│   │   ├── guards/
+│   │   │   └── auth.guard.ts
+│   │   ├── interceptors/
+│   │   │   └── auth.interceptor.ts
+│   │   ├── services/
+│   │   │   └── auth.service.ts
+│   │   └── core.config.ts
+│
+│   ├── shared/               # Component tái sử dụng
+│   │   ├── components/
+│   │   │   └── confirm-dialog/
+│   │   ├── models/
+│   │   └── pipes/
+│
+│   ├── features/             # THEO NGHIỆP VỤ
+│   │   ├── books/
+│   │   │   ├── pages/
+│   │   │   │   ├── book-list.page.ts
+│   │   │   │   ├── book-detail.page.ts
+│   │   │   │   └── book-form.page.ts
+│   │   │   ├── components/
+│   │   │   │   └── book-table.component.ts
+│   │   │   ├── services/
+│   │   │   │   └── book.service.ts
+│   │   │   ├── models/
+│   │   │   │   └── book.model.ts
+│   │   │   └── book.routes.ts
+│   │
+│   │   └── authors/
+│   │       └── ...
+│
+│   ├── layouts/
+│   │   └── main-layout.component.ts
+│
+│   ├── app.routes.ts
+│   └── app.config.ts
+│
+└── environments/
