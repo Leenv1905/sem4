@@ -1,0 +1,7 @@
+[
+  {"id":"u1","name":"Alice Nguyen","email":"alice@example.com"},
+  {"id":"u2","name":"Bob Tran","email":"bob@example.com"},
+  {"id":"u3","name":"Charlie Pham","email":"charlie@example.com"},
+  {"id":"u4","name":"David Le","email":"david@example.com"},
+  {"id":"u5","name":"Emma Hoang","email":"emma@example.com"}
+]

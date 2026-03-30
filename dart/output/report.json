@@ -1,0 +1,19 @@
+{
+  "users": 5,
+  "accounts": 7,
+  "transactions": 30,
+  "errors": [],
+  "anomalies": [
+    "t7",
+    "t14",
+    "t22",
+    "t26"
+  ],
+  "totalsPerUser": {
+    "u1": 19600.0,
+    "u2": 16300.0,
+    "u3": 48500.0,
+    "u4": 18400.0,
+    "u5": 2400.0
+  }
+}

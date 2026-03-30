@@ -1,0 +1,9 @@
+[
+  {"id":"a1","userId":"u1","balance":12000},
+  {"id":"a2","userId":"u1","balance":5000},
+  {"id":"a3","userId":"u2","balance":8000},
+  {"id":"a4","userId":"u3","balance":20000},
+  {"id":"a5","userId":"u4","balance":3000},
+  {"id":"a6","userId":"u4","balance":15000},
+  {"id":"a7","userId":"u5","balance":9000}
+]
