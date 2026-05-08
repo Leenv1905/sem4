@@ -1,6 +1,6 @@
 INSERT INTO places (name, location, description, image_url, rating, price) VALUES
-                                                                               ('Vịnh Hạ Long', 'Quảng Ninh', 'Di sản thiên nhiên thế giới', 'https://example.com/halongs.jpg', 4.9, 2500000),
-                                                                               ('Phố cổ Hội An', 'Quảng Nam', 'Thành phố cổ kính và lãng mạn', 'https://example.com/hoian.jpg', 4.8, 1200000),
-                                                                               ('Sapa', 'Lào Cai', 'Thị trấn trong mây', 'https://example.com/sapa.jpg', 4.7, 1800000),
-                                                                               ('Đà Lạt', 'Lâm Đồng', 'Thành phố ngàn hoa', 'https://example.com/dalat.jpg', 4.8, 1500000),
-                                                                               ('Phú Quốc', 'Kiên Giang', 'Đảo ngọc thiên đường', 'https://example.com/phuquoc.jpg', 4.9, 3000000);
+                                                                               ('Vịnh Hạ Long', 'Quảng Ninh', 'Di sản thiên nhiên thế giới', 'https://www.dulichhalong.net/wp-content/uploads/2020/07/Vinh-Ha-Long-Quang-Ninh.jpg', 4.9, 2500000),
+                                                                               ('Phố cổ Hội An', 'Quảng Nam', 'Thành phố cổ kính và lãng mạn', 'https://hoiancreativecity.com/uploads/images/thang%202-2023/hoi-an-gd659f3b8f_1920-1280x853.jpg', 4.8, 1200000),
+                                                                               ('Sapa', 'Lào Cai', 'Thị trấn trong mây', 'https://vietlandtravel.vn/upload/img/products/05032025/sapavietnam.jpg', 4.7, 1800000),
+                                                                               ('Đà Lạt', 'Lâm Đồng', 'Thành phố ngàn hoa', 'https://cdn-media.sforum.vn/storage/app/media/wp-content/uploads/2024/01/dia-diem-du-lich-da-lat-thumbnail.jpg', 4.8, 1500000),
+                                                                               ('Phú Quốc', 'Kiên Giang', 'Đảo ngọc thiên đường', 'https://bcp.cdnchinhphu.vn/334894974524682240/2025/6/23/phu-quoc-17506756503251936667562.jpg', 4.9, 3000000);
